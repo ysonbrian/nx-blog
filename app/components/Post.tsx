@@ -1,4 +1,5 @@
 import Image from 'next/image'
+import Link from 'next/link'
 import React from 'react'
 
 export type PostProp = {
@@ -13,7 +14,11 @@ export type PostProp = {
 
 const Post = (post: PostProp) => {
   return (
-    <div key={post.title} className={` rounded-lg `}>
+    <Link
+      href={`/posts/${post.slug}`}
+      key={post.title}
+      className={` rounded-lg hover:cursor-pointer`}
+    >
       <Image
         src={post.img}
         alt={post.title}
@@ -27,7 +32,7 @@ const Post = (post: PostProp) => {
         <div className={`text-sm `}>{post.subtitle}</div>
         <div className={`p-1 bg-emerald-400 rounded-md`}>{post.category}</div>
       </div>
-    </div>
+    </Link>
   )
 }
 
