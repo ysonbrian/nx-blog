@@ -3,34 +3,40 @@ import Link from 'next/link'
 import React from 'react'
 
 export type PostProp = {
-  slug: string
   title: string
-  subtitle: string
+  description: string
+  date: Date
   category: string
-  content: string
-  img: string
-  date: string
+  path: string
+  slug: string
+  featured: boolean
 }
+
+export type PostData = PostProp & { content: string }
 
 const Post = (post: PostProp) => {
   return (
     <Link
       href={`/posts/${post.slug}`}
       key={post.title}
-      className={` rounded-lg hover:cursor-pointer`}
+      className={` rounded-lg hover:cursor-pointer overflow-hidden shadow-lg`}
     >
       <Image
-        src={post.img}
+        src={`${post.path}.png`}
         alt={post.title}
         width={350}
         height={200}
         className={`rounded-tl-lg rounded-tr-lg w-full`}
       />
       <div className={`flex flex-col items-center gap-1 bg-white p-4`}>
-        <div className={`flex self-end text-sm`}>{post.date}</div>
-        <div className={`text-lg font-bold`}>{post.title}</div>
-        <div className={`text-sm `}>{post.subtitle}</div>
-        <div className={`p-1 bg-emerald-400 rounded-md`}>{post.category}</div>
+        <time className={`self-end text-xs`}>{post.date.toString()}</time>
+        <h3 className={`text-md font-bold`}>{post.title}</h3>
+        <p className={`text-sm w-full truncate text-center `}>
+          {post.description}
+        </p>
+        <span className={`p-1 bg-emerald-400 rounded-lg text-sm px-2 py-2`}>
+          {post.category}
+        </span>
       </div>
     </Link>
   )

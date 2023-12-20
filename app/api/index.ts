@@ -1,64 +1,30 @@
 import fs from 'fs'
+import { readFile } from 'fs/promises'
 import matter from 'gray-matter'
-import { PostProp } from '../components/Post'
+import { PostData, PostProp } from '../components/Post'
+import path from 'path'
 
-export const getMdFiles = async () => {
-  const files = fs.readdirSync('public/data')
-
-  const posts = files.map((fileName) => {
-    const slug = fileName.replace('.md', '')
-    const readFile = fs.readFileSync(`public/data/${fileName}`, 'utf-8')
-    const { data: frontmatter, content } = matter(readFile)
-
-    return {
-      slug,
-      title: frontmatter.title,
-      subtitle: frontmatter.subTitle,
-      category: frontmatter.category,
-      content,
-      img: frontmatter.img,
-      date: frontmatter.date,
-    }
-  })
-  return posts
+export async function getFeaturedPosts(): Promise<PostProp[]> {
+  return getAllPosts().then((posts) => posts.filter((post) => post.featured))
 }
 
-export const getMdFile = async (slug: string): Promise<PostProp> => {
-  const files = fs.readdirSync('public/data')
+export async function getAllPosts(): Promise<PostProp[]> {
+  // const files = fs.readdirSync('/data')
+  const filePath = path.join(process.cwd(), 'data', 'posts.json')
+  return readFile(filePath, 'utf-8')
+    .then<PostProp[]>(JSON.parse)
+    .then((posts) => posts.sort((a, b) => (a.date > b.date ? -1 : 1)))
+}
 
-  // const posts = files.map((fileName) => {
-  //   const slug = fileName.replace('.md', '')
-  //   const readFile = fs.readFileSync(`public/data/${fileName}`, 'utf-8')
-  //   const { data: frontmatter, content } = matter(readFile)
-
-  //   return {
-  //     slug,
-  //     title: frontmatter.title,
-  //     subtitle: frontmatter.subTitle,
-  //     category: frontmatter.category,
-  //     content,
-  //     img: frontmatter.img,
-  //     date: frontmatter.date,
-  //   }
-  // })
-
+export async function getMdFile(fileName: string): Promise<PostData> {
   try {
-    const post = files.filter((file) => file === `${slug}.md`)[0]
-    console.log('files', post)
-
-    if (!post) throw Error()
-    const readFile = fs.readFileSync(`public/data/${post}`, 'utf-8')
-    const { data: frontmatter, content } = matter(readFile)
-
-    return {
-      slug,
-      title: frontmatter.title,
-      subtitle: frontmatter.subTitle,
-      category: frontmatter.category,
-      content,
-      img: frontmatter.img,
-      date: frontmatter.date,
-    }
+    const post = path.join(process.cwd(), '/data/posts', `${fileName}.md`)
+    const metadata = await getAllPosts().then((post) =>
+      post.find((post) => post.slug === fileName)
+    )
+    if (!metadata) throw new Error(`Cannot find!`)
+    const content = await readFile(post, 'utf-8')
+    return { ...metadata, content }
   } catch (error) {
     console.log('Error 발생!')
     throw error

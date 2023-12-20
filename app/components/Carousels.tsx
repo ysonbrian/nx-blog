@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import Post from './Post'
-import { getMdFiles } from '../api'
 import { PostProp } from './Post'
 import Image from 'next/image'
 
@@ -59,9 +58,9 @@ const Carousels = ({ posts }: any) => {
         swipeable
       >
         {posts.map((post: any) => (
-          <div key={post.title} className={` rounded-lg flex flex-col p-4`}>
+          <div key={post.title} className={` rounded-lg flex flex-col pr-3 `}>
             <Image
-              src={post.img}
+              src={`${post.path}.png`}
               alt={post.title}
               width={350}
               height={200}

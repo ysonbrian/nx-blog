@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import Carousel from 'react-multi-carousel'
 import 'react-multi-carousel/lib/styles.css'
 import Post from './Post'
-import { getMdFiles } from '../api'
+import { getAllPosts } from '../api'
 import { PostProp } from './Post'
 import Carousels from './Carousels'
 
 const Like = async () => {
-  const posts = await getMdFiles()
+  const posts = await getAllPosts()
 
   return (
     <div>
