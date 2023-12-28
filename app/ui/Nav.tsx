@@ -5,7 +5,7 @@ const NavList = [
   { name: 'home', src: '/' },
   { name: 'about', src: 'about' },
   { name: 'posts', src: 'posts' },
-  { name: 'contract', src: 'contract' },
+  { name: 'contact', src: 'contact' },
 ]
 
 const Nav = () => {

@@ -12,7 +12,11 @@ export type PostProp = {
   featured: boolean
 }
 
-export type PostData = PostProp & { content: string }
+export type PostData = PostProp & {
+  content: string
+  next: PostProp | null
+  prev: PostProp | null
+}
 
 const Post = (post: PostProp) => {
   return (
