@@ -8,7 +8,7 @@ export default function Home() {
     <main className='container mx-auto '>
       <div className={`flex flex-col justify-center items-center gap-1`}>
         <div>Image</div>
-        <div className={`text-xl font-black`}>Hi, I'm Crypto313</div>
+        <div className={`text-xl font-black`}>Hi, I am Crypto313</div>
         <div className={`text-lg font-bold`}>Full-stack engineer</div>
         <Link
           href={`/contact`}

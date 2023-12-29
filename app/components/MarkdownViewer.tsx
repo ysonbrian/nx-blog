@@ -14,16 +14,14 @@ export default function MarkdownViewer({ content }: { content: string }) {
           const match = /language-(\w+)/.exec(className || '')
           return match ? (
             <SyntaxHighlighter
-              children={String(children).replace(/\n$/, '')}
               language={match[1]}
               PreTag='div'
-              {...props}
               style={materialDark}
-            />
+            >
+              {String(children).replace(/\n$/, '')}
+            </SyntaxHighlighter>
           ) : (
-            <code className={className} {...props}>
-              {children}
-            </code>
+            <code className={className}>{children}</code>
           )
         },
         img: (image) => (

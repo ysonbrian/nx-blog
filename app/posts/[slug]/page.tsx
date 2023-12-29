@@ -1,12 +1,23 @@
-import { getMdFile } from '@/app/api'
+import { getFeaturedPosts, getMdFile } from '@/app/api'
 import AdjacentPostCard from '@/app/components/AdjacentPostCard'
 import PostContent from '@/app/components/PostContent'
+import { Metadata } from 'next'
 
 import Image from 'next/image'
 
 export type Props = {
   params: {
     slug: string
+  }
+}
+
+export async function generateMetadata({
+  params: { slug },
+}: Props): Promise<Metadata> {
+  const { title, description } = await getMdFile(slug)
+  return {
+    title,
+    description,
   }
 }
 
@@ -29,6 +40,13 @@ const PostPage = async ({ params: { slug } }: Props) => {
       </section>
     </article>
   )
+}
+
+export async function generateStaticParams() {
+  const posts = await getFeaturedPosts()
+  return posts.map((post) => ({
+    slug: post.slug,
+  }))
 }
 
 export default PostPage

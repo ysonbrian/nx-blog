@@ -2,9 +2,7 @@
 
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import Banner, { BannerData } from './Banner'
-import nodeMailer from 'nodemailer'
-import { sendMail } from '../api'
-import mail from '../api/mail'
+import { sendContactEmail } from '../service/contact'
 
 type Form = {
   from: string
@@ -12,8 +10,10 @@ type Form = {
   message: string
 }
 
+const DEFAULT_DATA = { from: '', subject: '', message: '' }
+
 export default function ContactForm() {
-  const [form, setForm] = useState<Form>({ from: '', subject: '', message: '' })
+  const [form, setForm] = useState<Form>(DEFAULT_DATA)
   const [banner, setBanner] = useState<BannerData | null>(null)
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -23,16 +23,30 @@ export default function ContactForm() {
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await mail(form, undefined)
+    sendContactEmail(form)
+      .then(() => {
+        setBanner({
+          message: '메일을 성공적으로 보냈습니다.',
+          state: 'success',
+        })
+        setForm(DEFAULT_DATA)
+      })
+      .catch(() => {
+        setBanner({ message: '메일 전송에 실패했습니다.', state: 'error' })
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setBanner(null)
+        }, 3000)
+      })
+
+    // await mail(form, undefined)
     // const result = await sendMail()
     // if (result === 'success') {
     //   setBanner({ message: '성공했어!', state: 'success' })
     // } else {
     //   setBanner({ message: '실패했어!', state: 'error' })
     // }
-    setTimeout(() => {
-      setBanner(null)
-    }, 3000)
   }
 
   return (

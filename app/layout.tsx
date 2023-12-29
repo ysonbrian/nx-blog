@@ -6,8 +6,14 @@ import Nav from './ui/Nav'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Welcome to my NX Blog!',
-  description: 'Using Next.js to build simple blog',
+  title: {
+    default: 'NX Blog',
+    template: 'NX Blog | %s',
+  },
+  description: 'NX Blog',
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({

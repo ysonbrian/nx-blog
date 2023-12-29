@@ -11,7 +11,7 @@ const NavList = [
 const Nav = () => {
   return (
     <div className={`flex justify-between px-16 py-6`}>
-      <div className={`text-[28px] font-bold`}>NX's Blog</div>
+      <div className={`text-[28px] font-bold`}>NXs Blog</div>
       <ul className={`flex gap-2`}>
         {NavList.map((list) => (
           <Link key={list.name} href={`/${list.src}`}>
